@@ -3,10 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FirstPageComponent } from './first-page/first-page.component';
+import { SecondPageComponent } from './second-page/second-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FirstPageComponent,
+    SecondPageComponent,
+    HomePageComponent,
+    NotFoundPageComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
