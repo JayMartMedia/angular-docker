@@ -8,6 +8,8 @@ import { SecondPageComponent } from './second-page/second-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { FirstSubpageComponent } from './first-subpage/first-subpage.component';
+import { FirstPageBaseComponent } from './first-page-base/first-page-base.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     SecondPageComponent,
     HomePageComponent,
     NotFoundPageComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    FirstSubpageComponent,
+    FirstPageBaseComponent
   ],
   imports: [
     BrowserModule,
