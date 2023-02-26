@@ -1,0 +1,21 @@
+FROM node:18-bullseye-slim as build
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+# If you are working on a project that uses a private npm registry
+#   you may need to copy over a .npmrc file before running `npm ci/install`
+#   so that Docker can authenticate with the private registry
+# More info: https://docs.npmjs.com/docker-and-private-modules
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM busybox:latest as run
+RUN mkdir /www
+COPY --from=build /app/dist/angular-docker /www
+COPY httpd.conf /etc
+COPY e404.html .
+COPY e404.html /www
+EXPOSE 80
+# Run using busybox httpd: https://openwrt.org/docs/guide-user/services/webserver/http.httpd
+CMD ["httpd", "-f", "-vv", "-p", "80", "-h", "/www", "-c", "/etc/httpd.conf"]
