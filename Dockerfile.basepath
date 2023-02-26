@@ -1,3 +1,4 @@
+# Documentation about node image on the Docker hub: https://hub.docker.com/_/node
 FROM node:18-bullseye-slim as build
 WORKDIR /app
 COPY package.json .
@@ -8,9 +9,17 @@ COPY package-lock.json .
 # More info: https://docs.npmjs.com/docker-and-private-modules
 RUN npm ci
 COPY . .
+# Documentation on deploying an Angular app: https://angular.io/guide/deployment
+# Documentation specifically about the --base-href tag: https://angular.io/guide/deployment#the-base-tag
+#
+# The extra "--" allows the --base-href option to be passed through the npm command to the ng package
+#     https://stackoverflow.com/questions/43046885/what-does-do-when-running-an-npm-command
+#     https://medium.com/fhinkel/the-curious-case-of-double-dashes-b5e7711698f
+#
 # angular-docker will need to be changed to match the basepath
 RUN npm run build -- --base-href /angular-docker/
 
+# Documentation about nginx image on the Docker hub: https://hub.docker.com/_/nginx
 FROM nginx:1.22 as run
 # angular-docker on the left will need to be changed to match the name of your app in the dist directory
 # angular-docker on the right will need to be changed to match the basepath
