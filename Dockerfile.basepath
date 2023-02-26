@@ -1,0 +1,18 @@
+FROM node:18-bullseye-slim as build
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+# If you are working on a project that uses a private npm registry
+#   you may need to copy over a .npmrc file before running `npm ci/install`
+#   so that Docker can authenticate with the private registry
+# More info: https://docs.npmjs.com/docker-and-private-modules
+RUN npm ci
+COPY . .
+# angular-docker will need to be changed to match the basepath
+RUN npm run build -- --base-href /angular-docker/
+
+FROM nginx:1.22 as run
+# angular-docker on the left will need to be changed to match the name of your app in the dist directory
+# angular-docker on the right will need to be changed to match the basepath
+COPY --from=build /app/dist/angular-docker /usr/share/nginx/html/angular-docker
+COPY nginx-basepath.conf /etc/nginx/conf.d/default.conf

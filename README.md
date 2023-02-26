@@ -100,3 +100,33 @@ Configuring the app to run in Docker does not break the apps normal development 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 You will need NPM and Node installed to run the app on the host machine.
+
+## Deploying app on a different base path
+
+Sometimes you may want to deploy the app to a specific base path. For example if you have a domain such as `companydomain.com` which has different sub-paths, each handled by a different app. I.e. `companydomain.com/sales` could be a React app, and `companydomain.com/blog` could be handled by this Angular app.
+
+Both nginx and the Angular app will need to be configured to allow this.
+
+In this repo, the [Dockerfile.basepath](Dockerfile.basepath) and [nginx-basepath.conf](nginx-basepath.conf) files show the configuration that is needed.
+
+The Dockerfile passes the `--base-href {directory}` option to the angular build command which configures the angular app correctly.
+
+The nginx-basepath.conf file has changes to the location and fallback file values in order to serve the correct files on the proper base path.
+
+### Running this example app on a base path
+
+Running this app in docker is similar to the above example without the base path. The only different here is that we are explicitly using the `Dockerfile.basepath` file rather than the default `Dockerfile`, and we are naming the image `angular-docker-basepath` to differentiate it from the image that doesn't use the base path.
+
+In your terminal, build the image by running:
+```sh
+docker build -f Dockerfile.basepath -t angular-docker-basepath:1.0 .
+```
+
+In your terminal, run the image by running:
+```sh
+docker run -d -p 1234:80 angular-docker-basepath:1.0
+```
+
+You should now be able to view the app at http://localhost:1235/angular-docker/
+
+You can stop the app as you would any other docker container by running `docker ps` to get the container id, and `docker stop {containerId}` to stop the container.
